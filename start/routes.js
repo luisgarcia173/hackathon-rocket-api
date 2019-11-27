@@ -19,21 +19,8 @@ const Route = use('Route')
 Route.group(() => {
   Route.resource('company', 'CompanyController').apiOnly()
   Route.resource('opportunity', 'OpportunityController').apiOnly()
-})
-
-Route.group(() => {
-  Route.resource('users', 'UserController')
-    .apiOnly()
-})
-Route.group(() => {
-  Route.resource('user-badge', 'UserBadgeController')
-    .apiOnly()
-})
-Route.group(() => {
-  Route.resource('badge', 'BadgeController')
-    .apiOnly()
-})
-Route.group(() => {
-  Route.resource('opportunities-users', 'OpportunitiesUserController')
-    .apiOnly()
+  Route.resource('users', 'UserController').apiOnly()
+  Route.resource('user-badge', 'UserBadgeController').apiOnly()
+  Route.resource('badge', 'BadgeController').apiOnly()
+  Route.resource('opportunities-users', 'OpportunitiesUserController').apiOnly()
 })
