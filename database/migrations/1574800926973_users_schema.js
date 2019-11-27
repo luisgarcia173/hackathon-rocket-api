@@ -18,7 +18,7 @@ class UsersSchema extends Schema {
   }
 
   down () {
-    this.drop('users')
+    // this.drop('users')
   }
 }
 

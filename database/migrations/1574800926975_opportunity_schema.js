@@ -20,10 +20,15 @@ class OpportunitySchema extends Schema {
         .onDelete('CASCADE')
       table.timestamps()
     })
+    this.create('opportunities_users', (table) => {
+      table.integer('user_id').unsigned().references('id').inTable('users')
+      table.integer('opportunity_id').unsigned().references('id').inTable('opportunities')
+    })
   }
 
   down () {
-    this.drop('opportunities')
+    // this.drop('opportunities')
+    // this.drop('opportunities_users')
   }
 }
 
