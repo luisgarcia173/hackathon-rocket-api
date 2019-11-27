@@ -4,6 +4,8 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Opportunity = use('App/Models/Opportunity')
+
 /**
  * Resourceful controller for interacting with opportunities
  */
@@ -18,18 +20,7 @@ class OpportunityController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-  }
-
-  /**
-   * Render a form to be used for creating a new opportunity.
-   * GET opportunities/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+    return await Opportunity.all()
   }
 
   /**
@@ -41,6 +32,16 @@ class OpportunityController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+
+    const data = request.only([
+      'description',
+      'title',
+      'salary',
+      'status',
+      'company_id'
+    ])
+
+    return await Opportunity.create(data)
   }
 
   /**
@@ -53,18 +54,9 @@ class OpportunityController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-  }
 
-  /**
-   * Render a form to update an existing opportunity.
-   * GET opportunities/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
+    const opportunity = await Opportunity.findOrFail(params.id)
+    return opportunity
   }
 
   /**
@@ -76,6 +68,19 @@ class OpportunityController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+
+    const opportunity = await Opportunity.findOrFail(params.id)
+    const data = request.only([
+      'description',
+      'title',
+      'salary',
+      'status',
+      'company_id'
+    ])
+
+    opportunity.merge(data)
+    await opportunity.save()
+    return opportunity
   }
 
   /**
@@ -87,6 +92,9 @@ class OpportunityController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+
+    const opportunity = await Opportunity.findOrFail(params.id)
+    await opportunity.delete()
   }
 }
 
