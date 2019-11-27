@@ -4,6 +4,8 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Badge = use("App/Models/Badge");
+
 /**
  * Resourceful controller for interacting with badges
  */
@@ -41,6 +43,9 @@ class BadgeController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const { badge } = request.body;
+
+    return await Badge.create(badge);
   }
 
   /**

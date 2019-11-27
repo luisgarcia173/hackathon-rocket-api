@@ -4,6 +4,10 @@
 const Model = use('Model')
 
 class User extends Model {
+
+  badges() {
+    return this.hasMany('App/Models/Badge')
+  }
 }
 
 module.exports = User

@@ -14,10 +14,12 @@ class BadgesSchema extends Schema {
     this.create('opportunities_badges', function(table) {
       table.integer('badge_id').unsigned().references('id').inTable('badges')
       table.integer('opportunity_id').unsigned().references('id').inTable('opportunities')
+      table.timestamps()
     })
     this.create('user_badges', (table) => {
       table.integer('user_id').unsigned().references('id').inTable('users')
       table.integer('badge_id').unsigned().references('id').inTable('badges')
+      table.timestamps()
     })
   }
 

@@ -23,6 +23,7 @@ class OpportunitySchema extends Schema {
     this.create('opportunities_users', (table) => {
       table.integer('user_id').unsigned().references('id').inTable('users')
       table.integer('opportunity_id').unsigned().references('id').inTable('opportunities')
+      table.timestamps()
     })
   }
 

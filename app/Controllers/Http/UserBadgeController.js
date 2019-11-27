@@ -4,17 +4,16 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const User = use('App/Models/User');
+const UserBadge = use("App/Models/UserBadge");
+const Database = use("Database");
 
 /**
- * Resourceful controller for interacting with users
+ * Resourceful controller for interacting with userbadges
  */
-class UserController {
-
-
+class UserBadgeController {
   /**
-   * Show a list of all users.
-   * GET users
+   * Show a list of all userbadges.
+   * GET userbadges
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -22,13 +21,11 @@ class UserController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    const users = await User.all();
-    return users;
   }
 
   /**
-   * Render a form to be used for creating a new user.
-   * GET users/create
+   * Render a form to be used for creating a new userbadge.
+   * GET userbadges/create
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -39,22 +36,21 @@ class UserController {
   }
 
   /**
-   * Create/save a new user.
-   * POST users
+   * Create/save a new userbadge.
+   * POST userbadges
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const { user } = request.body;
-
-    return await User.create(user);
+    const  user_badge  = request.body;
+    return await UserBadge.create(user_badge);
   }
 
   /**
-   * Display a single user.
-   * GET users/:id
+   * Display a single userbadge.
+   * GET userbadges/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -62,13 +58,18 @@ class UserController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    const users = await User.find(params.id);
-    return users;
+    const userBadges = await Database.from('user_badges').where('user_id', params.id);
+    const badgesList = [];
+    userBadges.forEach(badge => {
+      badgesList.push(badge.badge_id);
+    });
+    const badges = Database.from('badges').whereIn('id', badgesList);
+    return badges;
   }
 
   /**
-   * Render a form to update an existing user.
-   * GET users/:id/edit
+   * Render a form to update an existing userbadge.
+   * GET userbadges/:id/edit
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -79,8 +80,8 @@ class UserController {
   }
 
   /**
-   * Update user details.
-   * PUT or PATCH users/:id
+   * Update userbadge details.
+   * PUT or PATCH userbadges/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -90,8 +91,8 @@ class UserController {
   }
 
   /**
-   * Delete a user with id.
-   * DELETE users/:id
+   * Delete a userbadge with id.
+   * DELETE userbadges/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -101,4 +102,4 @@ class UserController {
   }
 }
 
-module.exports = UserController
+module.exports = UserBadgeController

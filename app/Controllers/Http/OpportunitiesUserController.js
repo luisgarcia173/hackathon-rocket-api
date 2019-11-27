@@ -4,17 +4,16 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const User = use('App/Models/User');
+const OpportunitiesUser = use("App/Models/OpportunitiesUser");
+const Database = use("Database");
 
 /**
- * Resourceful controller for interacting with users
+ * Resourceful controller for interacting with opportunitiesusers
  */
-class UserController {
-
-
+class OpportunitiesUserController {
   /**
-   * Show a list of all users.
-   * GET users
+   * Show a list of all opportunitiesusers.
+   * GET opportunitiesusers
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -22,13 +21,11 @@ class UserController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    const users = await User.all();
-    return users;
   }
 
   /**
-   * Render a form to be used for creating a new user.
-   * GET users/create
+   * Render a form to be used for creating a new opportunitiesuser.
+   * GET opportunitiesusers/create
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -39,22 +36,21 @@ class UserController {
   }
 
   /**
-   * Create/save a new user.
-   * POST users
+   * Create/save a new opportunitiesuser.
+   * POST opportunitiesusers
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const { user } = request.body;
-
-    return await User.create(user);
+    const opportunities_user  = request.body;
+    return await OpportunitiesUser.create(opportunities_user);
   }
 
   /**
-   * Display a single user.
-   * GET users/:id
+   * Display a single opportunitiesuser.
+   * GET opportunitiesusers/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -62,13 +58,19 @@ class UserController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    const users = await User.find(params.id);
-    return users;
+    const opportunitiesUser = await Database.select('*')
+    .from('opportunities_users')
+    .rightJoin('opportunities', 'opportunities_users.opportunity_id', 'opportunities.id')
+    .where('opportunities_users.user_id', params.id);
+
+    opportunitiesUser.forEach(op => !op.user_id ? op.status = 'N' : op.status = 'S');
+
+    return opportunitiesUser;
   }
 
   /**
-   * Render a form to update an existing user.
-   * GET users/:id/edit
+   * Render a form to update an existing opportunitiesuser.
+   * GET opportunitiesusers/:id/edit
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -79,8 +81,8 @@ class UserController {
   }
 
   /**
-   * Update user details.
-   * PUT or PATCH users/:id
+   * Update opportunitiesuser details.
+   * PUT or PATCH opportunitiesusers/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -90,8 +92,8 @@ class UserController {
   }
 
   /**
-   * Delete a user with id.
-   * DELETE users/:id
+   * Delete a opportunitiesuser with id.
+   * DELETE opportunitiesusers/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -101,4 +103,4 @@ class UserController {
   }
 }
 
-module.exports = UserController
+module.exports = OpportunitiesUserController

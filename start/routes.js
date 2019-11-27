@@ -19,3 +19,20 @@ const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+
+Route.group(() => {
+  Route.resource('users', 'UserController')
+    .apiOnly()
+})
+Route.group(() => {
+  Route.resource('user-badge', 'UserBadgeController')
+    .apiOnly()
+})
+Route.group(() => {
+  Route.resource('badge', 'BadgeController')
+    .apiOnly()
+})
+Route.group(() => {
+  Route.resource('opportunities-users', 'OpportunitiesUserController')
+    .apiOnly()
+})
