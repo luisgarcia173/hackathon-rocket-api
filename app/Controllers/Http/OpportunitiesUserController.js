@@ -60,8 +60,8 @@ class OpportunitiesUserController {
   async show ({ params, request, response, view }) {
     const opportunitiesUser = await Database.select('*')
     .from('opportunities_users')
-    .rightJoin('opportunities', 'opportunities_users.opportunity_id', 'opportunities.id')
-    .where('opportunities_users.user_id', params.id);
+    .leftJoin('opportunities', 'opportunities_users.opportunity_id', 'opportunities.id')
+    //.where('opportunities_users.user_id', params.id);
 
     opportunitiesUser.forEach(op => !op.user_id ? op.status = 'N' : op.status = 'S');
 
